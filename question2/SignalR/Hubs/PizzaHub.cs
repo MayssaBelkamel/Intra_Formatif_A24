@@ -13,6 +13,9 @@ namespace SignalR.Hubs
 
         public override async Task OnConnectedAsync()
         {
+            _pizzaManager.AddUser();
+            await Clients.All.SendAsync("user", _pizzaManager.NbConnectedUsers);
+
             await base.OnConnectedAsync();
         }
 
