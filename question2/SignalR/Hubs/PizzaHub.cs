@@ -21,11 +21,24 @@ namespace SignalR.Hubs
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
+            _pizzaManager.RemoveUser();
+            await Clients.All.SendAsync("user", _pizzaManager.NbConnectedUsers);
             await base.OnConnectedAsync();
         }
 
         public async Task SelectChoice(PizzaChoice choice)
         {
+            string groupName = _pizzaManager.GetGroupName(choice);
+
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+
+            await Clients.Group(groupName).SendAsync("money", _pizzaManager.Money[(int)choice]);
+
+            await Clients.Group(groupName).SendAsync("nbPizzas", _pizzaManager.NbPizzas[(int)choice]);
+
+            await Clients.Group(groupName).SendAsync("price", _pizzaManager.PIZZA_PRICES[(int)choice]);
+
+           
         }
 
         public async Task UnselectChoice(PizzaChoice choice)
@@ -34,6 +47,9 @@ namespace SignalR.Hubs
 
         public async Task AddMoney(PizzaChoice choice)
         {
+            var groupName = _pizzaManager.GetGroupName(choice);
+            //_pizzaManager.IncreaseMoney(groupName);
+            //await  Clients.Group(groupName).SendAsync()
         }
 
         public async Task BuyPizza(PizzaChoice choice)
