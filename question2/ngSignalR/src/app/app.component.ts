@@ -70,6 +70,8 @@ this.hubConnection.on('user', (data) => {
   }
 
   addMoney() {
+    
+     this.hubConnection?.invoke("AddMoney", this.selectedChoice);
   }
 
   buyPizza() {
