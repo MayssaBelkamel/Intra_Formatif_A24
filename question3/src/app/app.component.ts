@@ -22,13 +22,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 })
 export class AppComponent {
  formGroup: FormGroup;
+ comment:string="";
   constructor(private formBuilder: FormBuilder) {
         this.formGroup = this.formBuilder.group(
       {
         nom: ['', [Validators.required]],
-        roadNumber : ['', [Validators.required],
-                          Validators.min(1000), // Minimum allowed value is 10
-                         Validators.max(9999) ],
+        roadNumber : ['', [Validators.required,
+                          Validators.min(1000), 
+                         Validators.max(9999) ]],
         postalCode: ['', [ Validators.pattern('"^[A-Z][0-9][A-Z][ ]?[0-9][A-Z][0-9]$')]],
         comment: ['', [Validators.required]]
       },
