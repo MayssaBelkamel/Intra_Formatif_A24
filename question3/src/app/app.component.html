@@ -11,7 +11,9 @@
     <mat-form-field style="width: 100%">
         <mat-label>Nom</mat-label>
         <input matInput type="text" placeholder="Nom et prénom" name="name" >
-        
+         @if(formGroup.get('nom')?.hasError('required')) {
+    <mat-error> Votre nom est <strong>requis</strong> </mat-error>
+    }
     </mat-form-field>
 
     <mat-form-field style="width: 100%">
