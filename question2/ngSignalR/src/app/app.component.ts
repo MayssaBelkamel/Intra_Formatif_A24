@@ -31,7 +31,7 @@ export class AppComponent {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl('http://localhost:5282/hubs/pizza')
       .build();
-this.hubConnection.on('user', (data) => {
+this.hubConnection.on('UpdateNbUsers', (data) => {
       this.nbUsers = data;
     });
 
@@ -46,6 +46,8 @@ this.hubConnection.on('user', (data) => {
       this.hubConnection.on('money', (data) => {
       this.money = data;
     });
+
+      
 
     
     // TODO On doit ensuite se connecter
@@ -75,5 +77,6 @@ this.hubConnection.on('user', (data) => {
   }
 
   buyPizza() {
+    this.hubConnection?.invoke("BuyPizza", this.selectedChoice);
   }
 }
