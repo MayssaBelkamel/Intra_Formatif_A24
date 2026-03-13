@@ -24,6 +24,7 @@ export class AppComponent {
  formGroup: FormGroup;
  comment:string="";
   constructor(private formBuilder: FormBuilder) {
+    
         this.formGroup = this.formBuilder.group(
       {
         nom: ['', [Validators.required]],
@@ -31,10 +32,38 @@ export class AppComponent {
                           Validators.min(1000), 
                          Validators.max(9999) ]],
         postalCode: ['', [ Validators.pattern('"^[A-Z][0-9][A-Z][ ]?[0-9][A-Z][0-9]$')]],
-        comment: ['', [Validators.required]]
-      },
+        comment: ['', [this.minWordsValidator]]
+      },{
+  validators: this.commentContainsNameValidator
+}
     );
+
   }
+  minWordsValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null;
+
+    const words = control.value.trim().split(" ");
+
+    if (words.length < 10) {
+      return { minWords: true };
+    }
+
+    return null;
+  }
+
+  commentContainsNameValidator(form: AbstractControl): ValidationErrors | null {
+
+  const nom = form.get('nom')?.value;
+  const comment = form.get('comment')?.value;
+
+  if (!nom || !comment) return null;
+
+  if (comment.toLowerCase().includes(nom.toLowerCase())) {
+    return { commentContainsName: true };
+  }
+
+  return null;
+}
 }
 
 
